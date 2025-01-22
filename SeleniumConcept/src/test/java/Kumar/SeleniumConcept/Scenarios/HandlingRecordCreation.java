@@ -57,47 +57,40 @@ public class HandlingRecordCreation {
 		driver.findElement(By.xpath("//*[@id='medicine1']")).click();
 		List<WebElement> elementList = driver.findElements(By.xpath("//*[@name='medicine1']/option"));
 
-		for (WebElement e : elementList) {
+		Myfunction.DropdownScript(driver, "//*[@id='medicine1']", "Aspirin");
 
-			if (e.getText().equals("Paracetamol")) {
-				e.click();
+		Thread.sleep(2000);
 
-			}
-			
-		}
-			Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[contains(text(),'Next')]")).click();
 
-			driver.findElement(By.xpath("//*[contains(text(),'Next')]")).click();
+		// Medication details
+		String PrescriptionNumber2 = driver.findElement(By.xpath("//*[@id='presnumber']")).getText();
+		assertEquals("prescription message is not correct", PrescriptionNumber1, PrescriptionNumber2);
 
-			// Medication details
-			String PrescriptionNumber2 = driver.findElement(By.xpath("//*[@id='presnumber']")).getText();
-			assertEquals("prescription message is not correct", PrescriptionNumber1, PrescriptionNumber2);
+		// Select Medication
+		Myfunction.DropdownScript(driver, "//*[@id='medication']", "Cetirizine");
 
-			// Select Medication
-			Myfunction.DropdownScript(driver, "//*[@id='medication']", "Cetirizine");
+		// Start Date
+		driver.findElement(By.xpath("//*[@class='form-control']")).sendKeys("01/11/2025");
 
-			// Start Date
-			driver.findElement(By.xpath("//*[@class='form-control']")).sendKeys("01/11/2025");
+		// Duration (Days)
+		driver.findElement(By.xpath("//*[@id='duration']")).sendKeys("7");
 
-			// Duration (Days)
-			driver.findElement(By.xpath("//*[@id='duration']")).sendKeys("7");
+		// Doctor Notes
+		driver.findElement(By.xpath("//*[@id='notes']")).sendKeys("Hello Mr.Kumar");
 
-			// Doctor Notes
-			driver.findElement(By.xpath("//*[@id='notes']")).sendKeys("Hello Mr.Kumar");
+		// Submit
+		driver.findElement(By.xpath("//*[contains(text(),'Submit')]")).click();
 
-			// Submit
-			driver.findElement(By.xpath("//*[contains(text(),'Submit')]")).click();
+		// Prescription Page Added successfully
+		String actualMsg = driver
+				.findElement(
+						By.xpath("//*[contains(text(),'Prescription for patient Kiyansh Sahu is added successfully')]"))
+				.getText();
+		String expectedMsg = "Prescription for patient Kiyansh Sahu is added successfully";
 
-			// Prescription Page Added successfully
-			String actualMsg = driver
-					.findElement(By.xpath(
-							"//*[contains(text(),'Prescription for patient Kiyansh Sahu is added successfully')]"))
-					.getText();
-			String expectedMsg = "Prescription for patient Kiyansh Sahu is added successfully";
-
-			Assert.assertEquals(expectedMsg, actualMsg);
-
-		}
+		Assert.assertEquals(expectedMsg, actualMsg);
 
 	}
 
+}
